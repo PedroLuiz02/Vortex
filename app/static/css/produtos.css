@@ -196,222 +196,44 @@ nav img{
 }
 
 .hero{
-    position: relative;
-    width: 100%;
-    min-height: 100vh;
-}
-
-.hero img {
-    width: 100%;
-    display: block;
-}
-
-.hero-titulo{
-    position: absolute;
-    top: 180px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    animation: TopToDown 1.5s ease-in-out forwards;
-}
-
-.hero-titulo h1{
-    font-size: 70px;
-}
-
-.hero-titulo h3{
-    font-size: 64px;
-}
-
-.hero-titulo h6{
-    font-size: 16px;
-}
-
-.lata-titulo{
-    position: absolute;
-    top: 490px;
-    left: 50%;
-}
-
-#lata1{
-    width: auto;
-    height: 580px;
-
-    animation: TopToDown 1.2s ease-out forwards;
-}
-
-.diferenciais{
-    margin-top: 6rem;
-
-    animation: appear 3s ease-in-out;
-    animation-timeline: view();
-    animation-range: cover 0% cover 50%;
-}
-
-#diferenciais{
-    scroll-margin-top: 100px;
-}
-
-.box{
-    background: #13061B;
-    width: 100%;
-    height: 650px;
-    display: flex;
-    justify-content: space-between;
-}
-
-.cards-infos{
-    width: 100%;
-    padding: 100px 80px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.cards-infos h2{
-    font-size: 48px;
-    margin-bottom: 40px;
-}
-
-.cards{
-    display: flex;
-    gap: 20px;
-}
-
-.dif-box1{
-    width: 320px;
-    min-height: 380px;
-}
-
-.dif-box1 h5{
-    font-size: 28px;
-    margin-bottom: 25px;
-}
-
-.dif-box1 ul{
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    padding-left: 20px;
-}
-
-.right-cards{
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    flex: 1;
-}
-
-.row{
-    display: flex;
-    gap: 20px;
-}
-
-.row .glass{
-    flex: 1;
-    height: 180px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.row h5{
-    font-size: 24px;
-}
-
-.latas {
-    position: relative;
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.subs{
-    width: auto;
-    height: 480px;
-    filter: opacity(0.6);
-}
-
-.principal{
-    width: auto;
-    height: 520px;
-}
-
-.buttons{
-    margin: 20px 250px;
-    display: flex;
-    align-items: center;
-    gap: 20px;
-}
-
-.arrow-btn {
-    border-radius: 400px;
-    background-color: #D9D9D9;
-}
-
-.arrow-btn img {
-    width: 40px;
-    height: auto;
-    padding: 5px;
-}
-
-.procucts-btn {
-    font-size: 18px;
-    color: #E8EAE6;
-    background-color: #160720;
-    width: 150px;
-    height: 40px;
-    border-radius: 40px;
-    border: none;
-    cursor: pointer;
-}
-
-.empresa {
     margin-top: 8rem;
-    margin-bottom: 1rem;
+    max-width: 100%;
+    height: 90vh;
+    padding: 2rem;
     display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    animation: appear 3s ease-in-out;
-    animation-timeline: view();
-    animation-range: cover 0% cover 40%;
+    flex-direction: row;
+    align-items: start;
 }
 
-#empresa{
-    scroll-margin-top: 100px;
-}
-
-.empresa-titulo{
-    text-align: center;
-    font-size: 28px;
-}
-
-.empresa-content{
+.products-cards{
     display: flex;
-    padding: 100px 135px;
-    gap: 20px;
+    flex-direction: row;
+    gap: 2rem;
 }
 
-.empresa-infos{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 20px;
+.products-cards a{
+    text-decoration: none;
 }
 
-.empresa-box{
-    background-color: #160720;
-    padding: 22px;
+.exib-lata{
     border-radius: 10px;
+    width: 250px;
+    height: auto;
+    margin-bottom: 5px;
 }
 
-.empresa-box img{
- width: 550px;
- height: auto;
+.product{
+    text-decoration: none;
+}
+
+.product-name h4{
+    color: #D9D9D9;
+    font-size: 22px;
+}
+
+.product-name h6{
+    color: #adadad;
+    font-size: 16px;
 }
 
 .footer {

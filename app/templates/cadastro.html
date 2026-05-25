@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/cadastro.css') }}">
+    <title>Cadastro</title>
+</head>
+<body>
+
+    <main class="content">
+        <img src="../static/img/background_login.png" alt="Plano de Fundo de Cadastro" class="background">
+
+        <section class="form">
+            <form action="" method="post" class="login-form glass">
+                
+                <div class="left-content">
+                    <img src="../static/img/logo.png" alt="Logo" class="logo">
+                    <img src="../static/img/logo_name.png" alt="Logo" class="logo nome">
+                </div>
+
+                <div class="right-content">
+                    <div class="inputs">
+                        <div class="row">
+                            <label for="nomeForm">Nome Completo</label>
+                            <input type="text" id="nomeForm" name="nomeForm" placeholder="Insira o nome completo" required>
+                        </div>
+        
+                        <div class="row">
+                            <label for="emailForm">E-mail</label>
+                            <input type="text" id="emailForm" name="emailForm" placeholder="Insira o e-mail" required>
+                        </div>
+                        
+                        <div class="row">
+                            <label for="senhaForm">Senha</label>
+                            <input type="password" id="senhaForm" name="senhaForm" placeholder="Insira a senha" required>
+                        </div>
+        
+                        <div class="row">
+                            <label for="confirmSenhaForm">Confirme a Senha</label>
+                            <input type="password" id="confirmSenha" name="confirmSenhaForm" placeholder="Insira a senha novamente" required>
+                        </div>
+                    </div>
+        
+                    <button type="submit" class="cad-btn">Cadastrar</button>
+                    <h5 class="log-txt">Possui uma conta? <a href="/login">Faça login</a></h5>
+                </div>
+            </form>
+        </section>
+
+    </main>
+
+    <script src="../static/js/credencias.js"></script>
+</body>
+</html>

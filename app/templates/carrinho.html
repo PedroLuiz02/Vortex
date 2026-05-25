@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/carrinho.css') }}">
+    <title>Document</title>
+</head>
+<body>
+
+    <main class="container">
+        <header class="header glass-h">
+            <nav>
+                <div class="logo">
+                    <a href="/"><img src="../static/img/logo.png"></a>
+                    <a href="/">Vortex</a>
+                </div>
+                
+                <div class="menu">
+                    <a href="/produtos">Produtos</a>
+                    <a href="/#diferenciais">Diferenciais</a>
+                    <a href="/#empresa">Empresa</a>
+                </div>
+                
+                <div class="icons">
+                    {% if current_user.is_authenticated %}
+                    <div class="account" onclick="abrirMenu()">
+                        <a href="#"><img src="../static/img/user.png">{{current_user.nome.split()[0]}} {{current_user.nome.split()[1][0]}}.</a>
+                    </div>
+                    <div class="sub-menu-wrap" id="subMenu">
+                        <div class="sub-menu">
+                            <div class="user-infos">
+                                <h2>{{current_user.nome.split()[0]}} {{current_user.nome.split()[1]}}</h2>
+                            </div>
+                            <hr>
+                            <a href="/logout" class="sub-menu-links">
+                                <img src="../static/img/logout.png" alt="Ícone Logout">
+                                <p>Logout</p>
+                                <span>></span>
+                            </a>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="account">
+                        <a href="/login"><img src="../static/img/user.png">Faça Login</a>
+                    </div>
+                    {% endif %}
+                    
+                    <a href="#"><img src="../static/img/cart.png"></a>
+                </div>
+            </nav>
+        </header>
+
+        <section class="hero">
+            <h1>Carrinho</h1>
+            <div class="cart">
+                <div class="cart-list">
+                    {% for item in carrinho %}
+                        {% if current_user.is_authenticated %}
+
+                        <div class="cart-item">
+                            <form action="{{ url_for('selecionar', index=loop.index0) }}" method="POST">
+                                <input
+                                    type="checkbox"onchange="this.form.submit()"
+                                    {% if item.get('selecionado', True) %} checked {% endif %}>
+                            </form>
+                            <img src="{{ item.imagem }}" alt="Produto" class="cart-img">
+                            <h4>{{ item.nome }}</h4>
+                            <div class="qtd">
+                                <a href="{{ url_for('diminuir', index=loop.index0) }}">
+                                    <button>-</button>
+                                </a>
+                                <h4>{{ item.quantidade }}</h4>
+                                <a href="{{ url_for('aumentar', index=loop.index0) }}">
+                                    <button>+</button>
+                                </a>
+                            </div>
+                            <h4>R$ {{ item.preco }}</h4>
+                            <a href="{{ url_for('remover_carrinho', index=loop.index0) }}">
+                                <img src="../static/img/close.png" alt="Delete Icon" class="del-btn">
+                            </a>
+                        </div>
+                    
+                        
+                        {% else %}
+                        <div class="cart-item">
+                            <a href="/login"><h1>Faça Login Para Adicionar Itens</h1></a>
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <div class="summary">
+
+                    <h2>Resumo do Pedido</h2>
+                
+                    <div class="envio">
+                        <h4>Opções de Envio</h4>
+                        <select>
+                            <option>Envio Padrão - R$ {{ envio }}</option>
+                        </select>
+                    </div>
+                
+                    <div class="subtotal">
+                        <div class="row">
+                            <h4>Itens {{ quantidade_itens }}x</h4>
+                            <h5>R$ {{ subtotal }}</h5>
+                        </div>
+            
+                        <div class="row">
+                            <h4>Envio</h4>
+                            <h5>R$ {{ envio }}</h5>
+                        </div>
+                    </div>
+                
+                    <div class="total">
+                        <h2>Total</h2>
+                        <h2>R$ {{ total }}</h2>
+                    </div>
+                
+                </div>
+            </div>
+            <div class="next">
+                <a href="/endereco"><button class="next-btn">Continuar</button></a>
+            </div>
+        </section>
+
+        <footer class="footer"></footer>
+    </main>
+
+    <script src="../static/js/products.js"></script>
+</body>
+</html>

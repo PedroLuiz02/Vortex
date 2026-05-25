@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/produto.css') }}">
+    <title>Document</title>
+</head>
+<body>
+
+    <main class="container">
+        <header class="header glass-h">
+            <nav>
+                <div class="logo">
+                    <a href="/"><img src="../static/img/logo.png"></a>
+                    <a href="/">Vortex</a>
+                </div>
+                
+                <div class="menu">
+                    <a href="/produtos">Produtos</a>
+                    <a href="/#diferenciais">Diferenciais</a>
+                    <a href="/#empresa">Empresa</a>
+                </div>
+                
+                <div class="icons">
+                    {% if current_user.is_authenticated %}
+                    <div class="account" onclick="abrirMenu()">
+                        <a href="#"><img src="../static/img/user.png">{{current_user.nome.split()[0]}} {{current_user.nome.split()[1][0]}}.</a>
+                    </div>
+                    <div class="sub-menu-wrap" id="subMenu">
+                        <div class="sub-menu">
+                            <div class="user-infos">
+                                <h2>{{current_user.nome.split()[0]}} {{current_user.nome.split()[1]}}</h2>
+                            </div>
+                            <hr>
+                            <a href="/logout" class="sub-menu-links">
+                                <img src="../static/img/logout.png" alt="Ícone Logout">
+                                <p>Logout</p>
+                                <span>></span>
+                            </a>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="account">
+                        <a href="/login"><img src="../static/img/user.png">Faça Login</a>
+                    </div>
+                    {% endif %}
+                    
+                    <a href="/carrinho"><img src="../static/img/cart.png"></a>
+                </div>
+            </nav>
+        </header>
+
+        <section class="hero">
+            <div class="product-exib">
+                <img src="../static/img/exib_lata{{produto.id}}.png" alt="" class="exib">
+            </div>
+            <div class="product-card">
+                <img src="" alt="">
+                <div class="product-texts">
+                    <h1>{{produto.nome}}</h1>
+                    <h3>R$ {{produto.preco}}</h3>
+                    <div class="product-desc">
+                        <h5>{{produto.descricao}}</h5>
+                    </div>
+                </div>
+
+                <div class="product-buttons">
+                    <div class="sub-btns">
+                        <div class="qtd">
+                            <button type="button" onclick="diminuir()">-</button>
+                            <h4 id="qtd-text">1</h4>
+                            <button type="button" onclick="aumentar()">+</button>
+                        </div>
+
+                        <h6 class="estoque">Estoque: {{produto.estoque}}</h6>
+                    </div>
+                    <div class="btns">
+                        <form action="{{ url_for('adicionar_carrinho', id=produto.id) }}" method="POST">
+                            <input type="hidden" name="quantidade" id="quantidade-input" value="1">
+                            <button class="add-cart-btn">
+                                Adicionar ao carrinho
+                            </button>
+                        </form>
+                        <button class="buy-btn">Comprar agora</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="footer"></footer>
+    </main>
+
+    <script src="../static/js/products.js"></script>
+</body>
+</html>

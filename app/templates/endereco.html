@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/endereco.css') }}">
+    <title>Document</title>
+</head>
+<body>
+
+    <main class="container">
+        <header class="header glass-h">
+            <nav>
+                <div class="logo">
+                    <a href="/"><img src="../static/img/logo.png"></a>
+                    <a href="/">Vortex</a>
+                </div>
+                
+                <div class="menu">
+                    <a href="/produtos">Produtos</a>
+                    <a href="/#diferenciais">Diferenciais</a>
+                    <a href="/#empresa">Empresa</a>
+                </div>
+                
+                <div class="icons">
+                    {% if current_user.is_authenticated %}
+                    <div class="account" onclick="abrirMenu()">
+                        <a href="#"><img src="../static/img/user.png">{{current_user.nome.split()[0]}} {{current_user.nome.split()[1][0]}}.</a>
+                    </div>
+                    <div class="sub-menu-wrap" id="subMenu">
+                        <div class="sub-menu">
+                            <div class="user-infos">
+                                <h2>{{current_user.nome.split()[0]}} {{current_user.nome.split()[1]}}</h2>
+                            </div>
+                            <hr>
+                            <a href="/logout" class="sub-menu-links">
+                                <img src="../static/img/logout.png" alt="Ícone Logout">
+                                <p>Logout</p>
+                                <span>></span>
+                            </a>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="account">
+                        <a href="/login"><img src="../static/img/user.png">Faça Login</a>
+                    </div>
+                    {% endif %}
+                    
+                    <a href="/carrinho"><img src="../static/img/cart.png"></a>
+                </div>
+            </nav>
+        </header>
+
+        <section class="hero">
+            <div class="endereco-container">
+                <div class="endereco-form glass">
+        
+                    <div class="titles">
+                        <div class="title-top">
+                            <div class="title">
+                                <h1>Endereço de Entrega</h1>
+                                <p>Preencha os dados para continuar sua compra.</p>
+                            </div>
+
+                            <a href="/carrinho" class="back-btn">
+                                ← Voltar
+                            </a>
+                        </div>
+                    </div>
+        
+                    <form action="/endereco" method="POST">
+        
+                        <div class="input-group">
+                            <div class="input-box">
+                                <label>Nome Completo</label>
+                                <input type="text" 
+                                name="nome" 
+                                id="nome" 
+                                placeholder="Digite seu nome"
+                                oninput="validarCampo('nome', 'nome')"
+                                required>
+
+                                <span class="error"></span>
+                            </div>
+        
+                            <div class="input-box">
+                                <label>Telefone</label>
+                                <input type="text" 
+                                name="telefone" 
+                                id="telefone" 
+                                placeholder="(00) 00000-0000" 
+                                maxlength="15"
+                                oninput="validarCampo('telefone', 'telefone')"
+                                required>
+
+                                <span class="error"></span>
+                            </div>
+                        </div>
+        
+                        <div class="input-group">
+                            <div class="input-box">
+                                <label>CEP</label>
+                                <input type="text" 
+                                name="cep" id="cep" 
+                                placeholder="00000-000" 
+                                maxlength="8"
+                                oninput="validarCampo('cep', 'cep')"
+                                required>
+
+                                <span class="error"></span>
+                            </div>
+        
+                            <div class="input-box">
+                                <label>Estado</label>
+                                <input type="text" 
+                                name="estado" 
+                                id="estado" 
+                                placeholder="Estado" 
+                                oninput="validarCampo('estado', 'estado')"
+                                required>
+
+                                <span class="error"></span>
+                            </div>
+                        </div>
+        
+                        <div class="input-group">
+                            <div class="input-box">
+                                <label>Cidade</label>
+                                <input type="text" 
+                                name="cidade" 
+                                id="cidade" 
+                                placeholder="Cidade" 
+                                oninput="validarCampo('cidade', 'cidade')"
+                                required>
+
+                                <span class="error"></span>
+                            </div>
+        
+                            <div class="input-box">
+                                <label>Bairro</label>
+                                <input type="text" 
+                                name="bairro" 
+                                id="bairro" 
+                                placeholder="Bairro" 
+                                oninput="validarCampo('bairro', 'bairro')"
+                                required>
+
+                                <span class="error"></span>
+                            </div>
+                        </div>
+        
+                        <div class="input-group">
+                            <div class="input-box rua">
+                                <label>Rua</label>
+                                <input type="text" 
+                                name="rua" 
+                                id="rua" 
+                                placeholder="Rua" 
+                                oninput="validarCampo('rua', 'rua')"
+                                required>
+
+                                <span class="error"></span>
+                            </div>
+                        </div>
+        
+                        <div class="input-group">
+                            <div class="input-box">
+                                <label>Número</label>
+                                <input type="text" 
+                                name="numero" 
+                                id="numero" 
+                                placeholder="Nº"
+                                maxlength="6"
+                                oninput="validarCampo('numero', 'numero')"
+                                required>
+
+                                <span class="error"></span>
+                            </div>
+        
+                            <div class="input-box">
+                                <label>Complemento</label>
+                                <input type="text" 
+                                name="complemento" 
+                                id="complemento" 
+                                placeholder="Apartamento, bloco..." 
+                                oninput="validarCampo('complemento', 'complemento')"
+                                required>
+
+                                <span class="error"></span>
+                            </div>
+                        </div>
+        
+                        <button class="continue-btn">
+                            Continuar para Pagamento
+                        </button>
+    
+                    </form>
+                </div>
+        
+                <div class="pedido-summary glass">
+        
+                    <div class="summary-title">
+                        <h2>Seu Pedido</h2>
+                        <span>{{ quantidade_itens }} itens</span>
+                    </div>
+        
+                    <div class="summary-produto">
+                        {% for item in carrinho %}
+                            {% if item.get('selecionado', True) %}
+        
+                            <div class="summary-item">
+                                <img src="{{ item.imagem }}" alt="Produto">
+                                <div class="summary-info">
+                                    <h4>{{ item.nome }}</h4>
+                                    <p>
+                                        {{ item.quantidade }}x • 
+                                        R$ {{ item.preco }}
+                                    </p>
+                                </div>
+                            </div>
+
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+        
+                    <div class="summary">
+                        <div class="row">
+                            <h4>Subtotal</h4>
+                            <h4>R$ {{ subtotal }}</h4>
+                        </div>
+    
+                        <div class="row">
+                            <h4>Envio</h4>
+                            <h4>R$ {{ envio }}</h4>
+                        </div>
+    
+                        <div class="row total">
+                            <h3>Total</h3>
+                            <h3>R$ {{ total }}</h3>
+                        </div>
+                    </div>
+        
+                </div>
+        
+            </div>
+        </section>
+
+        <footer class="footer"></footer>
+    </main>
+
+    <script src="../static/js/endereco.js"></script>
+</body>
+</html>

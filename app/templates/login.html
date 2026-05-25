@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+    <title>login</title>
+</head>
+<body>
+
+    <main class="content">
+        <img src="../static/img/background_login.png" alt="Plano de Fundo de Login" class="background">
+
+        <section class="form">
+            <form action="" method="post" class="login-form glass">
+                <div class="left-content">
+                    <img src="../static/img/logo.png" alt="Logo" class="logo">
+                    <img src="../static/img/logo_name.png" alt="Logo" class="logo nome">
+                </div>
+                
+                <div class="right-content">
+                    <div class="inputs">
+                        <div class="row">
+                            <label for="emailForm">E-mail</label>
+                            <input type="text" id="emailForm" name="emailForm" placeholder="Insira o email" required>
+                        </div>
+                        
+                        <div class="row">
+                            <label for="password">Senha</label>
+                            <input type="password" id="password" name="senhaForm" placeholder="Insira a senha" required>
+                        </div>
+                    </div>
+        
+                    <button type="submit" class="login-btn">Entrar</button>
+                    <h5 class="cad-txt">Não possui uma conta? <a href="/cadastro">Cadastre-se</a></h5>
+                </div>
+            </form>
+        </section>
+
+    </main>
+
+    <script src="../static/js/credencias.js"></script>
+</body>
+</html>

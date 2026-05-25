@@ -12,20 +12,41 @@
         <header class="header glass-h">
             <nav>
                 <div class="logo">
-                    <a href="#"><img src="../static/img/logo.png"></a>
-                    <a href="#">Vortex</a>
+                    <a href="/"><img src="../static/img/logo.png"></a>
+                    <a href="/">Vortex</a>
                 </div>
-        
+                
                 <div class="menu">
-                    <a href="#">Produtos</a>
-                    <a href="#">Diferenciais</a>
-                    <a href="#">Empresa</a>
+                    <a href="/produtos">Produtos</a>
+                    <a href="#diferenciais">Diferenciais</a>
+                    <a href="#empresa">Empresa</a>
                 </div>
-        
+                
                 <div class="icons">
-                    <a href="#"><img src="../static/img/user.png"></a>
-        
-                    <a href="#"><img src="../static/img/cart.png"></a>
+                    {% if current_user.is_authenticated %}
+                    <div class="account" onclick="abrirMenu()">
+                        <a href="#"><img src="../static/img/user.png">{{current_user.nome.split()[0]}} {{current_user.nome.split()[1][0]}}.</a>
+                    </div>
+                    <div class="sub-menu-wrap" id="subMenu">
+                        <div class="sub-menu">
+                            <div class="user-infos">
+                                <h2>{{current_user.nome.split()[0]}} {{current_user.nome.split()[1]}}</h2>
+                            </div>
+                            <hr>
+                            <a href="/logout" class="sub-menu-links">
+                                <img src="../static/img/logout.png" alt="Ícone Logout">
+                                <p>Logout</p>
+                                <span>></span>
+                            </a>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="account">
+                        <a href="/login"><img src="../static/img/user.png">Faça Login</a>
+                    </div>
+                    {% endif %}
+                    
+                    <a href="/carrinho"><img src="../static/img/cart.png"></a>
                 </div>
             </nav>
         </header>
@@ -33,7 +54,7 @@
         <section class="hero">
             <img src="../static/img/background.png" alt="Background">
             <div class="hero-titulo">
-                <h1>Entre no Fluxo</h5>
+                <h1>Entre no Fluxo</h1>
                 <h3>a Cada Gole</h3>
                 <h6>Energia intensa, mente afiada</h6>
                 <h6>e potência a cada gole.</h6>
@@ -43,7 +64,7 @@
             </div>
         </section>
 
-        <section class="diferenciais">
+        <section class="diferenciais" id="diferenciais">
             <div class="box">
                 <div class="cards-infos">
                     <h2>Vortex Classic</h2>
@@ -86,10 +107,10 @@
                 </div>
 
                 <div class="latas">
-                    <img src="../static/img/lata1.png">
-                    <img src="../static/img/lata2.png">
-                    <img src="../static/img/lata3.png">
-                    <img src="../static/img/lata4.png">
+                    <img src="../static/img/lata1.png" class="principal">
+                    <img src="../static/img/lata2.png" class="subs">
+                    <img src="../static/img/lata3.png" class="subs">
+                    <img src="../static/img/lata4.png" class="subs">
                 </div>
             </div>
             <div class="buttons">
@@ -99,7 +120,7 @@
             </div>
         </section>
 
-        <section class="empresa">
+        <section class="empresa" id="empresa">
             <div class="empresa-titulo">
                 <h3>Vortex Energy</h3>
                 <h6>Desde 2025</h6>

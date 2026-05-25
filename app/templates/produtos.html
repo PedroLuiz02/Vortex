@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/produtos.css') }}">
+    <title>Document</title>
+</head>
+<body>
+
+    <main class="container">
+        <header class="header glass-h">
+            <nav>
+                <div class="logo">
+                    <a href="/"><img src="../static/img/logo.png"></a>
+                    <a href="/">Vortex</a>
+                </div>
+                
+                <div class="menu">
+                    <a href="#">Produtos</a>
+                    <a href="/#diferenciais">Diferenciais</a>
+                    <a href="/#empresa">Empresa</a>
+                </div>
+                
+                <div class="icons">
+                    {% if current_user.is_authenticated %}
+                    <div class="account" onclick="abrirMenu()">
+                        <a href="#"><img src="../static/img/user.png">{{current_user.nome.split()[0]}} {{current_user.nome.split()[1][0]}}.</a>
+                    </div>
+                    <div class="sub-menu-wrap" id="subMenu">
+                        <div class="sub-menu">
+                            <div class="user-infos">
+                                <h2>{{current_user.nome.split()[0]}} {{current_user.nome.split()[1]}}</h2>
+                            </div>
+                            <hr>
+                            <a href="/logout" class="sub-menu-links">
+                                <img src="../static/img/logout.png" alt="Ícone Logout">
+                                <p>Logout</p>
+                                <span>></span>
+                            </a>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="account">
+                        <a href="/login"><img src="../static/img/user.png">Faça Login</a>
+                    </div>
+                    {% endif %}
+                    
+                    <a href="/carrinho"><img src="../static/img/cart.png"></a>
+                </div>
+            </nav>
+        </header>
+
+        <section class="hero">
+            <div class="products-cards">
+                {% for produto in produtos %}
+                <a href="{{ url_for('produto', id=produto.id) }}" class="produto">
+                    <img src="../static/img/exibição_lata{{ loop.index }}.png" alt="Exibição de Lata" class="exib-lata">
+                    <div class="product-name">
+                        <h4>{{produto.nome}}</h4>
+                        <h6>{{produto.preco}}</h6>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+        </section>
+
+        <footer class="footer"></footer>
+    </main>
+
+    <script src="../static/js/products.js"></script>
+</body>
+</html>
