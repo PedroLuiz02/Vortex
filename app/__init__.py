@@ -14,4 +14,7 @@ db.init_app(app)
 
 os.makedirs("instance", exist_ok=True)
 
+with app.app_context():
+    db.create_all()
+
 from . import routes
