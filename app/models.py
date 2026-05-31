@@ -40,6 +40,13 @@ class ItemCarrinho(db.Model):
     produto_id = db.Column(db.Integer, db.ForeignKey("produtos.id"), nullable=False)
     quantidade = db.Column(db.Integer, nullable=False, default=1)
 
+class Frete(db.Model):
+    __tablename__ = "frete"
+
+    id = db.Column(db.Integer, primary_key=True)
+    preco = preco = db.Column(db.Float, nullable=False)
+
+
 def buscar_produtos_carrinho(carrinho_id):
 
     itens = ItemCarrinho.query.filter_by(carrinho_id=carrinho_id).all()

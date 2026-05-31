@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/carrinho.css') }}">
-    <title>Document</title>
+    <link rel="icon" href="{{ url_for('static', filename='img/logo_b.png') }}">
+    <title>Vortex | Meu Carrinho</title>
 </head>
 <body>
 
@@ -12,20 +13,20 @@
         <header class="header glass-h">
             <nav>
                 <div class="logo">
-                    <a href="/"><img src="../static/img/logo.png"></a>
-                    <a href="/">Vortex</a>
+                    <a href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='img/logo.png') }}"></a>
+                    <a href="{{ url_for('index') }}">Vortex</a>
                 </div>
                 
                 <div class="menu">
-                    <a href="/produtos">Produtos</a>
-                    <a href="/#diferenciais">Diferenciais</a>
-                    <a href="/#empresa">Empresa</a>
+                    <a href="{{ url_for('produtos') }}">Produtos</a>
+                    <a href="{{ url_for('index') }}#diferenciais">Diferenciais</a>
+                    <a href="{{ url_for('index') }}#empresa">Empresa</a>
                 </div>
                 
                 <div class="icons">
                     {% if current_user.is_authenticated %}
                     <div class="account" onclick="abrirMenu()">
-                        <a href="#"><img src="../static/img/user.png">{{current_user.nome.split()[0]}} {{current_user.nome.split()[1][0]}}.</a>
+                        <a href="#"><img src="{{ url_for('static', filename='img/user.png') }}">{{current_user.nome.split()[0]}} {{current_user.nome.split()[1][0]}}.</a>
                     </div>
                     <div class="sub-menu-wrap" id="subMenu">
                         <div class="sub-menu">
@@ -33,7 +34,7 @@
                                 <h2>{{current_user.nome.split()[0]}} {{current_user.nome.split()[1]}}</h2>
                             </div>
                             <hr>
-                            <a href="/logout" class="sub-menu-links">
+                            <a href="{{ url_for('logout') }}" class="sub-menu-links">
                                 <img src="../static/img/logout.png" alt="Ícone Logout">
                                 <p>Logout</p>
                                 <span>></span>
@@ -42,11 +43,11 @@
                     </div>
                     {% else %}
                     <div class="account">
-                        <a href="/login"><img src="../static/img/user.png">Faça Login</a>
+                        <a href="{{ url_for('login') }}"><img src="{{ url_for('static', filename='img/user.png') }}">Faça Login</a>
                     </div>
                     {% endif %}
                     
-                    <a href="#"><img src="../static/img/cart.png"></a>
+                    <a href="{{ url_for('carrinho') }}"><img src="{{ url_for('static', filename='img/cart.png') }}"></a>
                 </div>
             </nav>
         </header>
@@ -67,24 +68,22 @@
                             <img src="{{ item.imagem }}" alt="Produto" class="cart-img">
                             <h4>{{ item.nome }}</h4>
                             <div class="qtd">
-                                <a href="{{ url_for('diminuir', index=loop.index0) }}">
-                                    <button>-</button>
-                                </a>
-                                <h4>{{ item.quantidade }}</h4>
-                                <a href="{{ url_for('aumentar', index=loop.index0) }}">
-                                    <button>+</button>
-                                </a>
+                                <button class="btn-diminuir" data-index="{{ loop.index0 }}">-</button>
+                            
+                                <h4 id="quantidade-{{ loop.index0 }}">{{ item.quantidade }}</h4>
+                            
+                                <button class="btn-aumentar"data-index="{{ loop.index0 }}">+</button>
                             </div>
-                            <h4>R$ {{ item.preco }}</h4>
+                            <h4>R$ {{ "%.2f"|format(item.preco)|replace(".", ",") }}</h4>
                             <a href="{{ url_for('remover_carrinho', index=loop.index0) }}">
-                                <img src="../static/img/close.png" alt="Delete Icon" class="del-btn">
+                                <img src="{{ url_for('static', filename='img/close.png') }}" alt="Delete Icon" class="del-btn">
                             </a>
                         </div>
                     
                         
                         {% else %}
                         <div class="cart-item">
-                            <a href="/login"><h1>Faça Login Para Adicionar Itens</h1></a>
+                            <a href="{{ url_for('login') }}"><h1>Faça Login Para Adicionar Itens</h1></a>
                         </div>
                         {% endif %}
                     {% endfor %}
@@ -95,38 +94,40 @@
                 
                     <div class="envio">
                         <h4>Opções de Envio</h4>
-                        <select>
-                            <option>Envio Padrão - R$ {{ envio }}</option>
+                        <select id="frete-select">
+                            <option value="{{ frete.preco }}">Envio Padrão - R$ {{ "%.2f"|format(frete.preco)|replace(".", ",") }}</option>
                         </select>
                     </div>
                 
                     <div class="subtotal">
                         <div class="row">
-                            <h4>Itens {{ quantidade_itens }}x</h4>
-                            <h5>R$ {{ subtotal }}</h5>
+                            <h4 id="itens-qtd">Itens {{ quantidade_itens }}x</h4>
+                            <h5 id="subtotal">R$ {{ "%.2f"|format(subtotal)|replace(".", ",") }}</h5>
                         </div>
             
                         <div class="row">
                             <h4>Envio</h4>
-                            <h5>R$ {{ envio }}</h5>
+                            <h5 id="envio">R$ {{ "%.2f"|format(frete.preco)|replace(".", ",") }}</h5>
                         </div>
                     </div>
                 
                     <div class="total">
                         <h2>Total</h2>
-                        <h2>R$ {{ total }}</h2>
+                        <h2 id="total">R$ {{ "%.2f"|format(total)|replace(".", ",") }}</h2>
                     </div>
                 
                 </div>
             </div>
             <div class="next">
-                <a href="/endereco"><button class="next-btn">Continuar</button></a>
+                <a href="{{ url_for('endereco') }}"><button class="next-btn">Continuar</button></a>
             </div>
         </section>
 
         <footer class="footer"></footer>
     </main>
 
-    <script src="../static/js/products.js"></script>
+    <script src="{{ url_for('static', filename='js/carrinho.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/aviso.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/perfil_menu.js') }}"></script>
 </body>
 </html>

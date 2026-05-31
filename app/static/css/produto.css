@@ -14,6 +14,32 @@ html{
     scroll-behavior: smooth;
 }
 
+.mensagem{
+    padding: 10px 40px;
+    border-radius: 5px;
+    position: fixed;
+    top: 120px;
+    right: 5px;
+    z-index: 9999;
+    animation: reverse_appear 0.8s ease-in-out;
+}
+
+.warning{
+    background: #fff3cd;
+    color: #856404;
+}
+
+.success{
+    background: #c2d8c7;
+    color: #155724;
+}
+
+.error{
+    background: #f8d7da;
+    color: #721c24;
+    margin-bottom: 20px;
+}
+
 .glass{
     background: rgba(255,255,255,0.08);
     border: 1px solid rgba(255,255,255,0.15);
@@ -32,6 +58,18 @@ html{
     from {
         opacity: 0;
         translate: -100vw 0;
+    }
+
+    to {
+        opacity: 1;
+        translate: 0 0;
+    }
+}
+
+@keyframes reverse_appear{
+    from {
+        opacity: 0;
+        translate: 100vw 0;
     }
 
     to {
@@ -287,16 +325,6 @@ nav img{
 }
 
 .add-cart-btn{
-    color: #561F89;
-    font-size: 22px;
-    font-weight: 900;
-    height: 50px;
-    width: 100%;
-    border-radius: 10px;
-    cursor: pointer;
-}
-
-.buy-btn{
     color: #561F89;
     font-size: 22px;
     font-weight: 900;

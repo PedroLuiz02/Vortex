@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/produtos.css') }}">
-    <title>Document</title>
+    <link rel="icon" href="{{ url_for('static', filename='img/logo_b.png') }}">
+    <title>Vortex | Produtos</title>
 </head>
 <body>
 
@@ -12,20 +13,20 @@
         <header class="header glass-h">
             <nav>
                 <div class="logo">
-                    <a href="/"><img src="../static/img/logo.png"></a>
-                    <a href="/">Vortex</a>
+                    <a href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='img/logo.png') }}"></a>
+                    <a href="{{ url_for('index') }}">Vortex</a>
                 </div>
                 
                 <div class="menu">
-                    <a href="#">Produtos</a>
-                    <a href="/#diferenciais">Diferenciais</a>
-                    <a href="/#empresa">Empresa</a>
+                    <a href="{{ url_for('produtos') }}">Produtos</a>
+                    <a href="{{ url_for('index') }}#diferenciais">Diferenciais</a>
+                    <a href="{{ url_for('index') }}#empresa">Empresa</a>
                 </div>
                 
                 <div class="icons">
                     {% if current_user.is_authenticated %}
                     <div class="account" onclick="abrirMenu()">
-                        <a href="#"><img src="../static/img/user.png">{{current_user.nome.split()[0]}} {{current_user.nome.split()[1][0]}}.</a>
+                        <a href="#"><img src="{{ url_for('static', filename='img/user.png') }}">{{current_user.nome.split()[0]}} {{current_user.nome.split()[1][0]}}.</a>
                     </div>
                     <div class="sub-menu-wrap" id="subMenu">
                         <div class="sub-menu">
@@ -33,7 +34,7 @@
                                 <h2>{{current_user.nome.split()[0]}} {{current_user.nome.split()[1]}}</h2>
                             </div>
                             <hr>
-                            <a href="/logout" class="sub-menu-links">
+                            <a href="{{ url_for('logout') }}" class="sub-menu-links">
                                 <img src="../static/img/logout.png" alt="Ícone Logout">
                                 <p>Logout</p>
                                 <span>></span>
@@ -42,11 +43,11 @@
                     </div>
                     {% else %}
                     <div class="account">
-                        <a href="/login"><img src="../static/img/user.png">Faça Login</a>
+                        <a href="{{ url_for('login') }}"><img src="{{ url_for('static', filename='img/user.png') }}">Faça Login</a>
                     </div>
                     {% endif %}
                     
-                    <a href="/carrinho"><img src="../static/img/cart.png"></a>
+                    <a href="{{ url_for('carrinho') }}"><img src="{{ url_for('static', filename='img/cart.png') }}"></a>
                 </div>
             </nav>
         </header>
@@ -55,10 +56,10 @@
             <div class="products-cards">
                 {% for produto in produtos %}
                 <a href="{{ url_for('produto', id=produto.id) }}" class="produto">
-                    <img src="../static/img/exibição_lata{{ loop.index }}.png" alt="Exibição de Lata" class="exib-lata">
+                    <img src="{{ url_for('static', filename='img/exibição_lata' ~ loop.index ~ '.png') }}" alt="Exibição de Lata" class="exib-lata">
                     <div class="product-name">
                         <h4>{{produto.nome}}</h4>
-                        <h6>{{produto.preco}}</h6>
+                        <h6>R$ {{ "%.2f"|format(produto.preco)|replace(".", ",") }}</h6>
                     </div>
                 </a>
                 {% endfor %}
@@ -68,6 +69,8 @@
         <footer class="footer"></footer>
     </main>
 
-    <script src="../static/js/products.js"></script>
+    <script src="{{ url_for('static', filename='js/products.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/perfil_menu.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/aviso.js') }}"></script>
 </body>
 </html>

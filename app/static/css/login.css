@@ -14,6 +14,28 @@ html, body{
     height: 100%;
 }
 
+.mensagem{
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+}
+
+.warning{
+    background: #fff3cd;
+    color: #856404;
+}
+
+.success{
+    background: #c2d8c7;
+    color: #155724;
+}
+
+.error{
+    background: #f8d7da;
+    color: #721c24;
+    margin-bottom: 20px;
+}
+
 .glass {
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.062), rgba(255, 255, 255, 0));
     backdrop-filter: blur(10px);

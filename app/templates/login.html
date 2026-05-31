@@ -4,21 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
-    <title>login</title>
+    <link rel="icon" href="{{ url_for('static', filename='img/logo_b.png') }}">
+    <title>Vortex | Entrar</title>
 </head>
 <body>
 
     <main class="content">
-        <img src="../static/img/background_login.png" alt="Plano de Fundo de Login" class="background">
+        <img src="{{ url_for('static', filename='img/background_login.png') }}" alt="Plano de Fundo de Login" class="background">
 
         <section class="form">
             <form action="" method="post" class="login-form glass">
                 <div class="left-content">
-                    <img src="../static/img/logo.png" alt="Logo" class="logo">
-                    <img src="../static/img/logo_name.png" alt="Logo" class="logo nome">
+                    <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo" class="logo">
+                    <img src="{{ url_for('static', filename='img/logo_name.png') }}" alt="Logo" class="logo nome">
                 </div>
                 
                 <div class="right-content">
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% for categoria, mensagem in messages %}
+                            <div class="mensagem {{ categoria }}">
+                                {{ mensagem }}
+                            </div>
+                        {% endfor %}
+                    {% endwith %}
                     <div class="inputs">
                         <div class="row">
                             <label for="emailForm">E-mail</label>
@@ -39,6 +47,7 @@
 
     </main>
 
-    <script src="../static/js/credencias.js"></script>
+    <script src="{{ url_for('static', filename='js/credenciais.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/aviso.js') }}"></script>
 </body>
 </html>

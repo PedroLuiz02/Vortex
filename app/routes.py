@@ -2,12 +2,14 @@ from . import app
 from flask import render_template, jsonify, request, redirect, url_for, flash, session
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
-from .models import Usuario, Produtos
+from .models import Usuario, Produtos, Frete
 from .db import db
 import re
 
 lm = LoginManager(app)
 lm.login_view = 'login'
+lm.login_message = 'Você precisa fazer login para acessar esta página.'
+lm.login_message_category = 'warning'
 
 @lm.user_loader
 def user_loader(id):
@@ -16,24 +18,43 @@ def user_loader(id):
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+
+    produtos_db = Produtos.query.all()
+
+    produtos = []
+
+    for produto in produtos_db:
+        produtos.append({
+            "id": produto.id,
+            "nome": produto.nome,
+            "ingredientes": produto.ingredientes,
+            "beneficios": produto.beneficios,
+            "preco": produto.preco
+        })
+
+    return render_template("index.html", produtos=produtos)
 
 @app.route("/login", methods = ['GET', 'POST'])
 def login():
     if request.method == 'GET':
         return render_template("login.html")
+    
     elif request.method == 'POST':
         email = request.form['emailForm']
         senha = request.form['senhaForm']
 
         user = db.session.query(Usuario).filter_by(email=email).first()
         if not user:
-            return 'Usuário não encontrado'
+            flash('Usuário não encontrado', 'error')
+            return redirect(url_for('login'))
         
         if not check_password_hash(user.senha, senha):
-            return "Senha incorreta"
+            flash('Senha incorreta', 'error')
+            return redirect(url_for('login'))
         
         login_user(user)
+
+        flash('Logado com sucesso', 'success')
 
         return redirect(url_for('index'))
 
@@ -48,7 +69,7 @@ def cadastro():
         confirmar_senha = request.form['confirmSenhaForm']
 
         if senha != confirmar_senha:
-            return "As senhas não coincidem"
+            return flash('As senhas não coincidem!', 'error')
 
         senha_hash = generate_password_hash(senha)
 
@@ -58,12 +79,15 @@ def cadastro():
 
         login_user(novo_usuario)
 
+        flash('Conta criada com sucesso!', 'success')
+
         return redirect(url_for('index'))
     
 @app.route('/logout')
 @login_required
 def logout():
     logout_user()
+    flash('Deslogado com sucesso', 'error')
     return redirect(url_for('index'))
 
 @app.route("/produtos", methods = ['GET'])
@@ -92,19 +116,13 @@ def adicionar_carrinho(id):
     produto_existe = False
 
     for item in carrinho:
-
         if item['id'] == produto.id:
-
             item['quantidade'] += quantidade
-
             produto_existe = True
-
             break
 
     if not produto_existe:
-
         item = {
-
             'id': produto.id,
             'nome': produto.nome,
             'preco': float(produto.preco),
@@ -112,35 +130,96 @@ def adicionar_carrinho(id):
             'quantidade': quantidade,
             'selecionado': True
         }
-
         carrinho.append(item)
 
     session['carrinho'] = carrinho
 
+    flash('Produto adicionado ao carrinho!', 'success')
     return redirect(url_for('produto', id=produto.id))
 
-@app.route('/aumentar/<int:index>')
+@app.route('/adicionar_carrinho_erro/<int:id>', methods=['POST'])
+def adicionar_carrinho_erro(id):
+
+    produto = Produtos.query.get_or_404(id)
+
+    flash('Faça login para comprar!', 'error')
+    return redirect(url_for('produto', id=produto.id))
+
+def calcular_total(carrinho):
+
+    subtotal = sum(
+        item["preco"] * item["quantidade"]
+        for item in carrinho
+    )
+
+    envio = 10
+
+    total = subtotal + envio
+
+    return subtotal, envio, total
+
+@app.route("/aumentar/<int:index>", methods=["POST"])
 def aumentar(index):
 
-    carrinho = session.get('carrinho', [])
+    carrinho = session.get("carrinho", [])
 
-    carrinho[index]['quantidade'] += 1
+    carrinho[index]["quantidade"] += 1
 
-    session['carrinho'] = carrinho
+    session["carrinho"] = carrinho
 
-    return redirect(url_for('carrinho'))
+    subtotal = sum(
+        item["preco"] * item["quantidade"]
+        for item in carrinho
+    )
 
-@app.route('/diminuir/<int:index>')
+    quantidade_itens = sum(
+        item["quantidade"]
+        for item in carrinho
+    )
+
+    frete = Frete.query.first()
+
+    total = subtotal + frete.preco
+
+    return jsonify({
+        "quantidade": carrinho[index]["quantidade"],
+        "subtotal": round(subtotal, 2),
+        "total": round(total, 2),
+        "quantidade_itens": quantidade_itens,
+        "envio": frete.preco
+    })
+
+@app.route("/diminuir/<int:index>", methods=["POST"])
 def diminuir(index):
 
-    carrinho = session.get('carrinho', [])
+    carrinho = session.get("carrinho", [])
 
-    if carrinho[index]['quantidade'] > 1:
-        carrinho[index]['quantidade'] -= 1
+    if carrinho[index]["quantidade"] > 1:
+        carrinho[index]["quantidade"] -= 1
 
-    session['carrinho'] = carrinho
+    session["carrinho"] = carrinho
 
-    return redirect(url_for('carrinho'))
+    subtotal = sum(
+        item["preco"] * item["quantidade"]
+        for item in carrinho
+    )
+
+    quantidade_itens = sum(
+    item["quantidade"]
+    for item in carrinho
+    )
+
+    frete = Frete.query.first()
+
+    total = subtotal + frete.preco
+
+    return jsonify({
+        "quantidade": carrinho[index]["quantidade"],
+        "subtotal": round(subtotal, 2),
+        "total": round(total, 2),
+        "quantidade_itens": quantidade_itens,
+        "envio": frete.preco
+    })
 
 @app.route('/selecionar/<int:index>', methods=['POST'])
 def selecionar(index):
@@ -173,24 +252,29 @@ def carrinho():
     carrinho = session.get('carrinho', [])
 
     subtotal = 0
+
     quantidade_itens = 0
 
+    frete = Frete.query.first()
+
     for item in carrinho:
+
         if item.get('selecionado', True):
+
             subtotal += item['preco'] * item['quantidade']
             quantidade_itens += item['quantidade']
 
-    envio = 10
-
+    envio = frete.preco
     total = subtotal + envio
 
     return render_template(
-    "carrinho.html",
-    carrinho=carrinho,
-    subtotal=subtotal,
-    envio=envio,
-    total=total,
-    quantidade_itens=quantidade_itens
+        "carrinho.html",
+        carrinho=carrinho,
+        subtotal=round(subtotal, 2),
+        envio=round(envio, 2),
+        total=round(total, 2),
+        quantidade_itens=quantidade_itens,
+        frete=frete
     )
 
 @app.route('/limpar_carrinho')
@@ -269,8 +353,7 @@ def endereco():
 
         session['endereco'] = endereco
 
-        flash('Endereço salvo com sucesso!')
-
+        flash('Endereço salvo com sucesso!', 'success')
         return redirect(url_for('pagamento'))
 
     return render_template(
@@ -282,6 +365,14 @@ def endereco():
         quantidade_itens=quantidade_itens
     )
 
-@app.route("/pagamento", methods = ['GET'])
+@app.route("/pagamento")
+@login_required
 def pagamento():
     return render_template("pagamento.html")
+
+@app.route('/pagamento/indisponivel')
+@login_required
+def pagamento_indisponivel():
+
+    flash('Pagamentos não disponíveis', 'error')
+    return redirect(url_for('pagamento'))
