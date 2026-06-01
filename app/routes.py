@@ -34,29 +34,26 @@ def index():
 
     return render_template("index.html", produtos=produtos)
 
-@app.route("/login", methods = ['GET', 'POST'])
+@app.route("/login", methods=["GET", "POST"])
 def login():
-    if request.method == 'GET':
-        return render_template("login.html")
-    
-    elif request.method == 'POST':
-        email = request.form['emailForm']
-        senha = request.form['senhaForm']
 
-        user = db.session.query(Usuario).filter_by(email=email).first()
-        if not user:
-            flash('Usuário não encontrado', 'error')
-            return redirect(url_for('login'))
-        
-        if not check_password_hash(user.senha, senha):
-            flash('Senha incorreta', 'error')
-            return redirect(url_for('login'))
-        
-        login_user(user)
+    if request.method == "POST":
 
-        flash('Logado com sucesso', 'success')
+        email = request.form["emailForm"]
+        senha = request.form["senhaForm"]
 
-        return redirect(url_for('index'))
+        usuario = Usuario.query.filter_by(email=email).first()
+
+        if not usuario or not check_password_hash(usuario.senha, senha):
+            flash("E-mail ou senha incorretos.", "error")
+            return redirect(url_for("login"))
+
+        login_user(usuario)
+
+        flash("Login realizado com sucesso!", "success")
+        return redirect(url_for("index"))
+
+    return render_template("login.html")
 
 @app.route("/cadastro", methods=['GET', 'POST'])
 def cadastro():

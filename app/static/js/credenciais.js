@@ -18,15 +18,9 @@ if(email){
     email.addEventListener("input", validarEmail);
 }
 
-if(senhaLogin){
-    senhaLogin.addEventListener("input", () =>
-        validarSenha(senhaLogin)
-    );
-}
-
 if(senhaCadastro){
     senhaCadastro.addEventListener("input", () => {
-        validarSenha(senhaCadastro);
+        validarSenhaCadastro();
         validarConfirmacaoSenha();
     });
 }
@@ -105,31 +99,32 @@ function validarEmail(){
         email.classList.remove("input-valido");
 
         erro.innerText =
-            "Informe um e-mail válido";
+            "Informe um formato de e-mail válido";
         erro.style.color = "#ff4d4d";
     }
 }
 
-function validarSenha(campoSenha){
+function validarSenhaCadastro(){
 
     const erro =
-        campoSenha.parentElement.querySelector(".erro-texto");
+        senhaCadastro.parentElement.querySelector(".erro-texto");
 
-    if(regexSenha.test(campoSenha.value)){
+    if(regexSenha.test(senhaCadastro.value)){
 
-        campoSenha.classList.add("input-valido");
-        campoSenha.classList.remove("input-invalido");
+        senhaCadastro.classList.add("input-valido");
+        senhaCadastro.classList.remove("input-invalido");
 
         erro.innerText = "✓ Senha válida";
         erro.style.color = "#00ff88";
     }
     else{
 
-        campoSenha.classList.add("input-invalido");
-        campoSenha.classList.remove("input-valido");
+        senhaCadastro.classList.add("input-invalido");
+        senhaCadastro.classList.remove("input-valido");
 
         erro.innerText =
             "Mínimo 8 caracteres, letra maiúscula, letra minúscula e um número";
+
         erro.style.color = "#ff4d4d";
     }
 }
