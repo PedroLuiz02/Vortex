@@ -96,6 +96,12 @@ def cadastro():
             'error'
         )
         return redirect(url_for('cadastro'))
+    
+    usuario_existente = Usuario.query.filter_by(email=email).first()
+
+    if usuario_existente:
+        flash('E-mail já cadastrado!', 'error')
+        return redirect(url_for('cadastro'))
 
     senha_hash = generate_password_hash(senha)
 
