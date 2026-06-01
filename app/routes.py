@@ -39,19 +39,25 @@ def login():
 
     if request.method == "POST":
 
-        email = request.form["emailForm"]
-        senha = request.form["senhaForm"]
+        try:
 
-        usuario = Usuario.query.filter_by(email=email).first()
+            email = request.form["emailForm"]
+            senha = request.form["senhaForm"]
 
-        if not usuario or not check_password_hash(usuario.senha, senha):
-            flash("E-mail ou senha incorretos.", "error")
-            return redirect(url_for("login"))
+            usuario = Usuario.query.filter_by(email=email).first()
 
-        login_user(usuario)
+            if not usuario or not check_password_hash(usuario.senha, senha):
+                flash("E-mail ou senha incorretos.", "error")
+                return redirect(url_for("login"))
 
-        flash("Login realizado com sucesso!", "success")
-        return redirect(url_for("index"))
+            login_user(usuario)
+
+            flash("Login realizado com sucesso!", "success")
+            return redirect(url_for("index"))
+
+        except Exception as e:
+            print("ERRO LOGIN:", e)
+            raise
 
     return render_template("login.html")
 
