@@ -97,10 +97,16 @@ def cadastro():
         )
         return redirect(url_for('cadastro'))
     
-    usuario_existente = Usuario.query.filter_by(email=email).first()
+    usuario_email = Usuario.query.filter_by(email=email).first()
 
-    if usuario_existente:
+    if usuario_email:
         flash('E-mail já cadastrado!', 'error')
+        return redirect(url_for('cadastro'))
+
+    usuario_nome = Usuario.query.filter_by(nome=nome).first()
+
+    if usuario_nome:
+        flash('Nome já cadastrado!', 'error')
         return redirect(url_for('cadastro'))
 
     senha_hash = generate_password_hash(senha)
