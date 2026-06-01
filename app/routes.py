@@ -58,30 +58,64 @@ def login():
 
         return redirect(url_for('index'))
 
-@app.route("/cadastro", methods = ['GET', 'POST'])
+@app.route("/cadastro", methods=['GET', 'POST'])
 def cadastro():
+
     if request.method == 'GET':
         return render_template("cadastro.html")
-    elif request.method == 'POST':
-        nome = request.form['nomeForm']
-        email = request.form['emailForm']
-        senha = request.form['senhaForm']
-        confirmar_senha = request.form['confirmSenhaForm']
 
-        if senha != confirmar_senha:
-            return flash('As senhas não coincidem!', 'error')
+    nome = request.form['nomeForm']
+    email = request.form['emailForm']
+    senha = request.form['senhaForm']
+    confirmar_senha = request.form['confirmSenhaForm']
 
-        senha_hash = generate_password_hash(senha)
+    nomes = nome.strip().split()
 
-        novo_usuario = Usuario(nome=nome, email=email, senha=senha_hash)
-        db.session.add(novo_usuario)
-        db.session.commit()
+    ignorar = ['de', 'da', 'do', 'dos', 'das', 'e']
 
-        login_user(novo_usuario)
+    nomes_validos = [
+        n for n in nomes
+        if n.lower() not in ignorar
+    ]
 
-        flash('Conta criada com sucesso!', 'success')
+    if len(nomes_validos) < 3:
+        flash(
+            'Informe nome e sobrenomes completos.',
+            'error'
+        )
+        return redirect(url_for('cadastro'))
 
-        return redirect(url_for('index'))
+    if senha != confirmar_senha:
+        flash('As senhas não coincidem!', 'error')
+        return redirect(url_for('cadastro'))
+
+    if not re.match(r'^[^\s@]+@[^\s@]+\.com$', email):
+        flash('E-mail inválido!', 'error')
+        return redirect(url_for('cadastro'))
+
+    if not re.match(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$', senha):
+        flash(
+            'Senha deve ter 8 ou mais caracteres, letra maiúscula, letra minúscula e um número.',
+            'error'
+        )
+        return redirect(url_for('cadastro'))
+
+    senha_hash = generate_password_hash(senha)
+
+    novo_usuario = Usuario(
+        nome=nome,
+        email=email,
+        senha=senha_hash
+    )
+
+    db.session.add(novo_usuario)
+    db.session.commit()
+
+    login_user(novo_usuario)
+
+    flash('Conta criada com sucesso!', 'success')
+
+    return redirect(url_for('index'))
     
 @app.route('/logout')
 @login_required
@@ -249,10 +283,11 @@ def remover_carrinho(index):
 @app.route("/carrinho")
 def carrinho():
 
+    print(db.engine.url)
+    
     carrinho = session.get('carrinho', [])
 
     subtotal = 0
-
     quantidade_itens = 0
 
     frete = Frete.query.first()
@@ -264,7 +299,8 @@ def carrinho():
             subtotal += item['preco'] * item['quantidade']
             quantidade_itens += item['quantidade']
 
-    envio = frete.preco
+    envio = frete.preco if frete else 0
+
     total = subtotal + envio
 
     return render_template(

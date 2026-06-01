@@ -21,25 +21,36 @@
                 </div>
 
                 <div class="right-content">
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% for categoria, mensagem in messages %}
+                            <div class="mensagem {{ categoria }}">
+                                {{ mensagem }}
+                            </div>
+                        {% endfor %}
+                    {% endwith %}
                     <div class="inputs">
                         <div class="row">
                             <label for="nomeForm">Nome Completo</label>
                             <input type="text" id="nomeForm" name="nomeForm" placeholder="Insira o nome completo" required>
+                            <small class="erro-texto"></small>
                         </div>
         
                         <div class="row">
                             <label for="emailForm">E-mail</label>
                             <input type="text" id="emailForm" name="emailForm" placeholder="Insira o e-mail" required>
+                            <small class="erro-texto"></small>
                         </div>
                         
                         <div class="row">
                             <label for="senhaForm">Senha</label>
                             <input type="password" id="senhaForm" name="senhaForm" placeholder="Insira a senha" required>
+                            <small class="erro-texto"></small>
                         </div>
         
                         <div class="row">
                             <label for="confirmSenhaForm">Confirme a Senha</label>
                             <input type="password" id="confirmSenha" name="confirmSenhaForm" placeholder="Insira a senha novamente" required>
+                            <small class="erro-texto"></small>
                         </div>
                     </div>
         
@@ -52,6 +63,5 @@
     </main>
 
     <script src="{{ url_for('static', filename='js/credenciais.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/aviso.js') }}"></script>
 </body>
 </html>

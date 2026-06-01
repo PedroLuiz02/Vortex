@@ -14,6 +14,42 @@ html, body{
     height: 100%;
 }
 
+.mensagem{
+    padding: 12px 20px;
+    border-radius: 8px;
+    z-index: 9999;
+    font-weight: 600;
+    animation: TopToDown .5s ease-in-out;
+    text-align: center;
+    margin-bottom: 12px;
+}
+
+.warning{
+    background: #fff3cd;
+    color: #856404;
+}
+
+.success{
+    background: #c2d8c7;
+    color: #155724;
+}
+
+.error{
+    background: #f8d7da;
+    color: #721c24;
+}
+
+@keyframes TopToDown {
+    from {
+        opacity: 0;
+        transform: translate(0, -120px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate(0, 0);
+    }
+}
 .glass {
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.062), rgba(255, 255, 255, 0));
     backdrop-filter: blur(10px);
@@ -91,10 +127,40 @@ html, body{
     margin-bottom: 3rem;
 }
 
+.input-valido{
+    border: 2px solid #00ff88 !important;
+    box-shadow: 0 0 8px rgba(0,255,136,.5);
+}
+
+.input-invalido{
+    border: 2px solid #ff4d4d !important;
+    box-shadow: 0 0 8px rgba(255,77,77,.5);
+}
+
+.erro-texto{
+    color: #ff7b7b;
+    font-size: 12px;
+    margin-top: 3px;
+}
+
 .row{
     display: flex;
     flex-direction: column;
     gap: 6px;
+}
+
+.row input{
+    border-radius: 4px;
+    border: 1px solid black;
+    font-size: 14px;
+    height: 30px;
+    padding: 10px;
+    transition: .3s;
+}
+
+.row input:focus{
+    outline: none;
+    box-shadow: none;
 }
 
 .row label{

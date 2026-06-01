@@ -31,11 +31,13 @@
                         <div class="row">
                             <label for="emailForm">E-mail</label>
                             <input type="text" id="emailForm" name="emailForm" placeholder="Insira o email" required>
+                            <small class="erro-texto"></small>
                         </div>
                         
                         <div class="row">
                             <label for="password">Senha</label>
                             <input type="password" id="password" name="senhaForm" placeholder="Insira a senha" required>
+                            <small class="erro-texto"></small>
                         </div>
                     </div>
         
@@ -48,6 +50,5 @@
     </main>
 
     <script src="{{ url_for('static', filename='js/credenciais.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/aviso.js') }}"></script>
 </body>
 </html>
