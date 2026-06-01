@@ -130,7 +130,7 @@ def cadastro():
 @login_required
 def logout():
     logout_user()
-    flash('Deslogado com sucesso', 'error')
+    flash('Deslogado com sucesso!', 'error')
     return redirect(url_for('index'))
 
 @app.route("/produtos", methods = ['GET'])
