@@ -398,7 +398,7 @@ def endereco():
 
         session['endereco'] = endereco
 
-        flash('Endereço salvo com sucesso!', 'success')
+        flash('Endereço validado com sucesso!', 'success')
         return redirect(url_for('pagamento'))
 
     return render_template(
