@@ -204,9 +204,7 @@ http://localhost:5000
 - Sistema de cupons
 - Favoritos
 - Avaliação de produtos
-- Dashboard administrativo
 - Histórico de pedidos
-- Integração com gateway de pagamento
 - Recuperação de senha
 
 ---
