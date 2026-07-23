@@ -100,6 +100,10 @@ Vortex/
 └── vercel.json
 ```
 
+## ⚠️ Observação
+
+Este projeto ainda não possui responsividade para dispositivos móveis. A interface foi desenvolvida inicialmente para uso em desktops e notebooks.
+
 ## Executando o projeto no VS Code
 
 ### 1. Clone o repositório
